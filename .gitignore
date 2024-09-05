@@ -1,8 +1,7 @@
 .env
-.venv
-.venv
+.datario-tourism
 .env
 .vscode
 draft.ipynb
 .DS_Store
-/data/
+/support/
