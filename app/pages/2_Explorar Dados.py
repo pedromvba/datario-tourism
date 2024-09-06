@@ -17,9 +17,10 @@ st.markdown(
     ''',
     unsafe_allow_html=True)
 
-
-# Q3 e Q9
+############ Q3 e Q9 #################
 st.header('Exploração dos Dados')
+
+st.subheader('Filtragem dos Dados')
 
 uploaded_path = './data/03_uploaded/uploaded_file.csv'
 
@@ -52,5 +53,19 @@ else:
     if not filtered_df.empty:
         st.dataframe(filtered_df)
 
-# Q10 e Q11
+############ Q4 ######################
+        st.subheader('Download dos Dados Filtrados')
+        st.download_button(
+            label='Caso deseje exportar os dados filtrados em formato .csv, favor utilizar o botão abaixo',
+            data=filtered_df.to_csv(index=False, encoding='utf-8'),
+            file_name='dados_filtrados.csv'
+            )
+
+############ Q10 e Q11 #################
+        st.subheader('Análise Gráfica dos Dados')
+
+
+
+
+
 
