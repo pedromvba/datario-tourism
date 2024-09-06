@@ -25,9 +25,13 @@ else:
         selection = st.multiselect(
             'Filtre os Dados por Países',
             options=df['Pais'].unique())
+        filtered_df = df[df['Pais'].isin(selection)]
     
     else:
         selection = st.multiselect(
             'Filtre os Dados por Contiente',
-            options=df['Continente'].unique()
-)
+            options=df['Continente'].unique())
+        filtered_df = df[df['Continente'].isin(selection)]
+    
+    if not filtered_df.empty:
+        st.dataframe(filtered_df)

@@ -62,12 +62,4 @@ if uploaded_file:
     df.to_csv('./data/03_uploaded/uploaded_file.csv', index=False, encoding='utf-8')
     st.write('Seguem abaixo as primeiras linhas dos dados recebidos')
     st.dataframe(df.head())
-
-
-
-
-    
-
-
-
-
+    st.session_state['file_state'] = 1 # maintain the file without deletion
