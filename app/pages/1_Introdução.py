@@ -8,13 +8,32 @@ st.set_page_config(
     page_icon="👋",
 )
 
+
+# applying the backgroud color
+
+background_color = st.session_state['backgroud_state']
+
+st.markdown(
+    f'''
+    <style>
+    [data-testid="stApp"] {{
+        background-color: {background_color}
+    }}
+    </style>
+    ''',
+    unsafe_allow_html=True)
+
+
+
+
+
 # Q1
 st.header('Introdução - Comece por Aqui 👋')
 
 st.subheader('Objetivo e Motivação')
 st.write('''
         O objetivo do dashboard é facilitar análises com relação a nacionalidade de turistas que chegaram no Rio de Janeiro,
-        no ano de 2019, por via aérea.
+        em determinado ano, por via aérea.
 
         A partir dessa análise será possível identificar públicos alvos para campanhas de turismo nos próximos anos uma vez que
         poderão ser visualizados de forma fácil os países que mais trazem turistas para o Rio de Janeiro, bem como a sazonalidade

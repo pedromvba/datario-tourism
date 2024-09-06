@@ -2,7 +2,23 @@ import streamlit as st
 import os
 import pandas as pd
 
-# Q3
+
+# applying the backgroud color
+
+background_color = st.session_state['backgroud_state']
+
+st.markdown(
+    f'''
+    <style>
+    [data-testid="stApp"] {{
+        background-color: {background_color}
+    }}
+    </style>
+    ''',
+    unsafe_allow_html=True)
+
+
+# Q3 e Q9
 st.header('Exploração dos Dados')
 
 uploaded_path = './data/03_uploaded/uploaded_file.csv'
@@ -11,9 +27,9 @@ if not os.path.isfile(uploaded_path):
     st.write('Antes de explorar os dados, favor inserir seu arquivo na aba Introdução')
 
 else:
-    st.write('Identificamos o seu upload. Segue amostra dos seus dados:')
+    st.write('Identificamos o seu upload. Seguem seus dados para exploração')
     df = pd.read_csv(uploaded_path, encoding='utf-8')
-    st.dataframe(df.head())
+    st.dataframe(df)
 
     st.write('Deseja realizar a análise por continente ou país?')
     group = st.radio(
@@ -35,3 +51,6 @@ else:
     
     if not filtered_df.empty:
         st.dataframe(filtered_df)
+
+# Q10 e Q11
+
