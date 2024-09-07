@@ -7,11 +7,10 @@ import altair as alt
 import pydeck as pdk
 import plotly.express as px
 from services.plots import bar_plot, map_plot, line_plot, area_plot
-
+import time
 
 
 # applying the backgroud color
-
 background_color = st.session_state['backgroud_state']
 
 st.markdown(
@@ -67,20 +66,15 @@ else:
         st.dataframe(filtered_df)
         st.write('_________________')
 
-
-############ Q4 ######################
-        st.subheader('Download dos Dados Filtrados')
-        st.download_button(
-            label='Caso deseje exportar os dados filtrados em formato .csv, favor clicar neste botão',
-            data=filtered_df.to_csv(index=False, encoding='utf-8'),
-            file_name='dados_filtrados.csv'
-            )
-
-        st.write('_________________')
-
-############ Q10, Q11 e Q12 #################
+############ Q5, Q10, Q11 e Q12 #################
         st.subheader('Análise Gráfica dos Dados')
         st.write('#### Distribuição Anual por País')
+
+
+        with st.spinner('Estamos Plotando os Gráficos'):
+            time.sleep(1.5)
+        st.success('Pronto!')
+
 
 ################## Bar Plot #######################
         # prepping the data
@@ -107,4 +101,14 @@ else:
 
 ################## Area Plot #######################
         area_plot(filtered_df, months=months)
+        st.write('_________________')
+
+        ############ Q4 ######################
+        st.subheader('Download dos Dados Filtrados')
+        st.download_button(
+            label='Caso deseje exportar os dados filtrados em formato .csv, favor clicar neste botão',
+            data=filtered_df.to_csv(index=False, encoding='utf-8'),
+            file_name='dados_filtrados.csv'
+            )
+
         st.write('_________________')

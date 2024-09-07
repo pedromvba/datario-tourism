@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import shutil
 import pandas as pd
+import time
 
 st.set_page_config(
     page_title="Introdução - Comece por Aqui",
@@ -77,10 +78,19 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
 
-
-
     df = pd.read_csv(uploaded_file, encoding='utf-8') 
     df.to_csv('./data/03_uploaded/uploaded_file.csv', index=False, encoding='utf-8')
+    st.session_state['file_state'] = 1 # maintain the file without deletion
+
+    progress_bar = st.progress(0, text='Estamos Processando os seus Dados!')
+    for percent in range(100):
+        time.sleep(0.01)
+        progress_bar.progress(percent + 1, text='Estamos Processando os seus Dados!')
+    
+    time.sleep(1)
+    progress_bar.empty()
+
+
+    time.sleep(0.3)
     st.write('Seguem abaixo as primeiras linhas dos dados recebidos')
     st.dataframe(df.head())
-    st.session_state['file_state'] = 1 # maintain the file without deletion
