@@ -27,7 +27,7 @@ st.markdown(
 
 
 
-# Q1
+############ Q1 ######################
 st.header('Introdução - Comece por Aqui 👋')
 
 st.subheader('Objetivo e Motivação')
@@ -48,19 +48,19 @@ st.write('''
          '''
 )
 
-# Q2
+############ Q2 e Q5 ######################
 st.subheader('Upload dos Dados')
 
 st.write('''
         Nesta seção é possível realizar o upload dos dados (somente um arquivo) para que seja o dashboard seja alimentado. Assim, antes de
         acessar as outras páginas, favor realizar o upload de um arquivo .csv no formato abaixo:
 
-        | Continente       | País       | Mês         | Número de Visitantes |
-        |------------------|------------|-------------|-----------------------|
-        | América do Norte | Canadá     | Janeiro     | 1209                  |
-        | América do Norte | Canadá     | Fevereiro   | 1496                  |
-        | América do Norte | Canadá     | Março       | 1633                  |
-        | América do Norte | Canadá     | Abril       | 722                   |
+        | Continente       | País       | Mês         | Número de Visitantes  |  Lat    | Long     |
+        |------------------|------------|-------------|-----------------------|---------|--------- |
+        | América do Norte | Canadá     | Janeiro     | 1209                  | 56.1304 | -106.3468|
+        | América do Norte | Canadá     | Fevereiro   | 1496                  | 56.1304 | -106.3468| 
+        | América do Norte | Canadá     | Março       | 1633                  | 56.1304 | -106.3468|
+        | América do Norte | Canadá     | Abril       | 722                   | 56.1304 | -106.3468|
          
 
 
@@ -76,6 +76,8 @@ uploaded_file = st.file_uploader(
                 )
 
 if uploaded_file:
+
+
 
     df = pd.read_csv(uploaded_file, encoding='utf-8') 
     df.to_csv('./data/03_uploaded/uploaded_file.csv', index=False, encoding='utf-8')

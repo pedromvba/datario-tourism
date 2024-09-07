@@ -5,3 +5,5 @@
 draft.ipynb
 .DS_Store
 /support/
+*__init__.py
+*__pycache__ 
