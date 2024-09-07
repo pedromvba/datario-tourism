@@ -53,6 +53,11 @@ else:
             options=df['Pais'].unique())
         
         filtered_df = df[df['Pais'].isin(selection)]
+
+        metrics_df = filtered_df
+        filtered_visitors = metrics_df['Numero de Visitantes'].sum()
+        grouped_df = metrics_df.groupby('Pais')['Numero de Visitantes'].sum()
+
         
     else:
         selection = st.multiselect(
@@ -60,35 +65,56 @@ else:
             options=df['Continente'].unique())
         
         filtered_df = df[df['Continente'].isin(selection)]
-        
-    
+
+
+        metrics_df = filtered_df
+        filtered_visitors = metrics_df['Numero de Visitantes'].sum()
+        grouped_df = metrics_df.groupby('Continente')['Numero de Visitantes'].sum()
+
+
     if not filtered_df.empty:
         st.dataframe(filtered_df)
         st.write('_________________')
 
 ############ Q5, Q10, Q11 e Q12 #################
-        st.subheader('Análise Gráfica dos Dados')
-        st.write('#### Distribuição Anual por País')
+        st.subheader(' Métricas e Análise Gráfica dos Dados')
 
-
-        with st.spinner('Estamos Plotando os Gráficos'):
+        with st.spinner('Estamos Plotando os Gráficos e Calculando as Métricas'):
             time.sleep(1.5)
         st.success('Pronto!')
 
+################## Metrics #######################
+
+        total_visitors = df['Numero de Visitantes'].sum()
+        selected_visitors_pct = round(100*(filtered_visitors/total_visitors),2)
+
+        col1, col2 = st.columns(2)
+        col1.metric('Número de Turistas Selecionados', filtered_visitors)
+        col2.metric('Percentual do Total', selected_visitors_pct)
+        st.write('_________________')
+
 
 ################## Bar Plot #######################
+        st.write('#### Distribuição Anual por País')
         # prepping the data
         barplot_df = filtered_df.groupby('Pais')['Numero de Visitantes'].sum().reset_index().sort_values(by='Numero de Visitantes', ascending=False )
 
         bar_plot(barplot_df)
 
+# Another Metrics
+        for i in range(grouped_df.shape[0]):
+            country_percent = grouped_df.iloc[i] / filtered_visitors
+            country = grouped_df.index[i]
+
+            st.metric(f'Percentual de {country} na seleção', f"{country_percent:.2%}")
+
 ################## Map Plot #######################
 
-        grouped_df = filtered_df.groupby(['Pais', 'Lat', 'Long'], as_index=False).agg({'Numero de Visitantes': 'sum'})
-        max_visitors = grouped_df['Numero de Visitantes'].max()
-        grouped_df['size'] = (grouped_df['Numero de Visitantes']/max_visitors)*2000000
+        map_grouped_df = filtered_df.groupby(['Pais', 'Lat', 'Long'], as_index=False).agg({'Numero de Visitantes': 'sum'})
+        max_visitors = map_grouped_df['Numero de Visitantes'].max()
+        map_grouped_df['size'] = (map_grouped_df['Numero de Visitantes']/max_visitors)*2000000
 
-        map_plot(grouped_df)
+        map_plot(map_grouped_df)
         st.write('_________________')
 
 ################## Line Plot #######################
