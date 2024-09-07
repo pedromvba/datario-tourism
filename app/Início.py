@@ -15,9 +15,6 @@ uploaded_path = './data/03_uploaded/uploaded_file.csv'
 if 'file_state' not in st.session_state:
     st.session_state['file_state'] = 0
 
-if 'option_state' not in st.session_state:
-    st.session_state['option_state'] = 0
-
 # checking if the file exists
 if (os.path.isfile(uploaded_path)) and (st.session_state['file_state'] == 0): # if file state == 1, then a new file was uploaded
     os.remove(uploaded_path)

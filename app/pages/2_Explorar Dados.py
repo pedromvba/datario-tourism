@@ -51,13 +51,10 @@ else:
     if group == 'País':
         selection = st.multiselect(
             'Filtre os Dados por Países',
-            options=df['Pais'].unique(),
-            key='option_state')
+            options=df['Pais'].unique())
         
         filtered_df = df[df['Pais'].isin(selection)]
         
-
-    
     else:
         selection = st.multiselect(
             'Filtre os Dados por Contiente',
@@ -69,6 +66,7 @@ else:
     if not filtered_df.empty:
         st.dataframe(filtered_df)
         st.write('_________________')
+
 
 ############ Q4 ######################
         st.subheader('Download dos Dados Filtrados')
