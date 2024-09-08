@@ -17,6 +17,10 @@ import json
 def read_data(path):
     return pd.read_csv(path, encoding='utf-8')
 
+@st.cache_data
+def read_map(map_path):
+    return gpd.read_file(map_path)
+
 
 # applying the backgroud color
 background_color = st.session_state['backgroud_state']
@@ -86,8 +90,8 @@ else:
     if not filtered_df.empty:
 
 ############ Q5 #################
-        with st.spinner('Estamos Plotando os Gráficos e Calculando as Métricas'):
-            time.sleep(1.5)
+        with st.spinner('Estamos Plotando os Gráficos e Calculando as Métricas, Por Favor Aguarde'):
+            time.sleep(6)
             st.success('Pronto!')
 
 
@@ -99,13 +103,24 @@ else:
         st.subheader(' Métricas e Análise Gráfica dos Dados')
 
 ################## Metrics #######################
+        
+        st.write('#### 1. Métrica Absoluta Perante o Total dos Dados')
 
         total_visitors = df['Numero de Visitantes'].sum()
         selected_visitors_pct = round(100*(filtered_visitors/total_visitors),2)
 
         col1, col2 = st.columns(2)
         col1.metric('Número de Turistas Selecionados', filtered_visitors)
-        col2.metric('Percentual do Total', selected_visitors_pct)
+        col2.metric('Percentual do Total', f'{selected_visitors_pct}%')
+
+        # Another Metrics
+        st.write('#### 2. Métricas Relativa à Seleção Realizada')
+
+        for i in range(grouped_df.shape[0]):
+            country_percent = grouped_df.iloc[i] / filtered_visitors
+            country = grouped_df.index[i]
+
+            st.metric(f'Percentual de {country} na seleção', f"{country_percent:.2%}")
         st.write('_________________')
 
 
@@ -116,13 +131,6 @@ else:
 
         bar_plot(barplot_df)
 
-# Another Metrics
-        for i in range(grouped_df.shape[0]):
-            country_percent = grouped_df.iloc[i] / filtered_visitors
-            country = grouped_df.index[i]
-
-            st.metric(f'Percentual de {country} na seleção', f"{country_percent:.2%}")
-
 ################## Map Plot #######################
 
         # map_grouped_df = filtered_df.groupby(['Pais', 'Lat', 'Long'], as_index=False).agg({'Numero de Visitantes': 'sum'})
@@ -131,22 +139,21 @@ else:
 
         # map_plot(map_grouped_df)
 
-
-
-        ################## New Map Plot #######################
+################## New Map Plot #######################
 
         # Carregar o shapefile do mapa mundial
-        map_path2 = './data/01_raw/geoBoundariesCGAZ_ADM0.shp'
-        world_map2 = gpd.read_file(map_path2)
+        map_path = './data/01_raw/geoBoundariesCGAZ_ADM0.shp'
+        world_map = read_map(map_path)
 
         # Agrupar os dados de visitantes por país e sigla
         map_grouped_df = filtered_df.groupby(['Pais', 'Sigla'], as_index=False).agg({'Numero de Visitantes': 'sum'})
 
         # Fazer a junção do DataFrame com o shapefile para combinar os dados geográficos com o número de visitantes
-        merged_df = pd.merge(world_map2, map_grouped_df, left_on='shapeGroup', right_on='Sigla', how='inner')
+        merged_df = pd.merge(world_map, map_grouped_df, left_on='shapeGroup', right_on='Sigla', how='inner')
 
         geo_plot(merged_df)
         st.write('_________________')
+
 
 ################## Line Plot #######################
         st.write('#### Evolução Mensal')
@@ -160,7 +167,8 @@ else:
         area_plot(filtered_df, months=months)
         st.write('_________________')
 
-        ############ Q4 ######################
+
+############ Q4 ######################
         st.subheader('Download dos Dados Filtrados')
         st.download_button(
             label='Caso deseje exportar os dados filtrados em formato .csv, favor clicar neste botão',
@@ -169,4 +177,6 @@ else:
             )
 
         st.write('_________________')
+
+
 

@@ -136,8 +136,8 @@ def geo_plot(df):
 
         # Ajustar o layout do gráfico
         fig.update_layout(
-            title_text="Número de Visitantes por País",
-            title_x=0.5
+            title_text='Densidade de Visitantes por País',
+            title_x=0 # title to the left
         )
 
         # Mostrar o gráfico no Streamlit
