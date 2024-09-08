@@ -56,12 +56,12 @@ st.write('''
         Nesta seção é possível realizar o upload dos dados (somente um arquivo) para que seja o dashboard seja alimentado. Assim, antes de
         acessar as outras páginas, favor realizar o upload de um arquivo .csv no formato abaixo:
 
-        | Continente       | País       | Mês         | Número de Visitantes  |  Lat    | Long     |
-        |------------------|------------|-------------|-----------------------|---------|--------- |
-        | América do Norte | Canadá     | Janeiro     | 1209                  | 56.1304 | -106.3468|
-        | América do Norte | Canadá     | Fevereiro   | 1496                  | 56.1304 | -106.3468| 
-        | América do Norte | Canadá     | Março       | 1633                  | 56.1304 | -106.3468|
-        | América do Norte | Canadá     | Abril       | 722                   | 56.1304 | -106.3468|
+        | Continente       | País       | Mês         | Número de Visitantes  |  Lat    | Long     | Sigla
+        |------------------|------------|-------------|-----------------------|---------|--------- |--------- |
+        | América do Norte | Canadá     | Janeiro     | 1209                  | 56.1304 | -106.3468| CAN      |
+        | América do Norte | Canadá     | Fevereiro   | 1496                  | 56.1304 | -106.3468| CAN      |
+        | América do Norte | Canadá     | Março       | 1633                  | 56.1304 | -106.3468| CAN      |
+        | América do Norte | Canadá     | Abril       | 722                   | 56.1304 | -106.3468| CAN      |
          
 
 
@@ -92,5 +92,5 @@ if uploaded_file:
 
 
     time.sleep(0.3)
-    st.write('Seguem abaixo as primeiras linhas dos dados recebidos')
+    st.write('Seguem abaixo as primeiras linhas dos dados recebidos. Favor acessar a aba Explorar Dados para iniciar sua análise.')
     st.dataframe(df.head())

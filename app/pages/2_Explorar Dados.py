@@ -6,8 +6,16 @@ import seaborn as sns
 import altair as alt
 import pydeck as pdk
 import plotly.express as px
-from services.plots import bar_plot, map_plot, line_plot, area_plot
+from services.plots import bar_plot, map_plot, line_plot, area_plot, geo_plot
 import time
+import geopandas as gpd
+import json
+
+################## Q7 #######################
+# Reading Data Function
+@st.cache_data
+def read_data(path):
+    return pd.read_csv(path, encoding='utf-8')
 
 
 # applying the backgroud color
@@ -35,7 +43,9 @@ if not os.path.isfile(uploaded_path):
 
 else:
     st.write('Identificamos o seu upload. Seguem seus dados para exploração')
-    df = pd.read_csv(uploaded_path, encoding='utf-8')
+
+    df = read_data(uploaded_path)
+    
     st.dataframe(df)
 
     st.write('''
@@ -46,6 +56,7 @@ else:
         'Escolha Continente ou País',
         options=['Continente', 'País']
     )
+
 
     if group == 'País':
         selection = st.multiselect(
@@ -73,15 +84,19 @@ else:
 
 
     if not filtered_df.empty:
+
+############ Q5 #################
+        with st.spinner('Estamos Plotando os Gráficos e Calculando as Métricas'):
+            time.sleep(1.5)
+            st.success('Pronto!')
+
+
         st.dataframe(filtered_df)
         st.write('_________________')
 
-############ Q5, Q10, Q11 e Q12 #################
-        st.subheader(' Métricas e Análise Gráfica dos Dados')
 
-        with st.spinner('Estamos Plotando os Gráficos e Calculando as Métricas'):
-            time.sleep(1.5)
-        st.success('Pronto!')
+############ Q10, Q11 e Q12 #################
+        st.subheader(' Métricas e Análise Gráfica dos Dados')
 
 ################## Metrics #######################
 
@@ -110,11 +125,27 @@ else:
 
 ################## Map Plot #######################
 
-        map_grouped_df = filtered_df.groupby(['Pais', 'Lat', 'Long'], as_index=False).agg({'Numero de Visitantes': 'sum'})
-        max_visitors = map_grouped_df['Numero de Visitantes'].max()
-        map_grouped_df['size'] = (map_grouped_df['Numero de Visitantes']/max_visitors)*2000000
+        # map_grouped_df = filtered_df.groupby(['Pais', 'Lat', 'Long'], as_index=False).agg({'Numero de Visitantes': 'sum'})
+        # max_visitors = map_grouped_df['Numero de Visitantes'].max()
+        # map_grouped_df['size'] = (map_grouped_df['Numero de Visitantes']/max_visitors)*2000000
 
-        map_plot(map_grouped_df)
+        # map_plot(map_grouped_df)
+
+
+
+        ################## New Map Plot #######################
+
+        # Carregar o shapefile do mapa mundial
+        map_path2 = './data/01_raw/geoBoundariesCGAZ_ADM0.shp'
+        world_map2 = gpd.read_file(map_path2)
+
+        # Agrupar os dados de visitantes por país e sigla
+        map_grouped_df = filtered_df.groupby(['Pais', 'Sigla'], as_index=False).agg({'Numero de Visitantes': 'sum'})
+
+        # Fazer a junção do DataFrame com o shapefile para combinar os dados geográficos com o número de visitantes
+        merged_df = pd.merge(world_map2, map_grouped_df, left_on='shapeGroup', right_on='Sigla', how='inner')
+
+        geo_plot(merged_df)
         st.write('_________________')
 
 ################## Line Plot #######################
@@ -138,3 +169,4 @@ else:
             )
 
         st.write('_________________')
+

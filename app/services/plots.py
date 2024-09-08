@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import altair as alt
 import pydeck as pdk
+import plotly.express as px
+import json
 
 
 ################## Bar Plot #######################
@@ -96,3 +98,47 @@ def area_plot(df, months):
     )
 
     return st.altair_chart(area_chart, use_container_width=True)
+
+
+
+####################### Geo Plot ###############
+
+def geo_plot(df):
+            # Converter o GeoDataFrame para GeoJSON
+        geojson_data = df.to_crs("EPSG:4326").to_json()
+
+        # Encontrar o valor mínimo e máximo de visitantes
+        min_visitors = df['Numero de Visitantes'].min()
+        max_visitors = df['Numero de Visitantes'].max()
+
+        # Criar o mapa coroplético com Plotly Express
+        fig = px.choropleth(
+            df,
+            geojson=json.loads(geojson_data),  # Converter o GeoJSON em um formato legível para Plotly
+            locations='Sigla',  # Usar a coluna 'Sigla' para relacionar os dados com as geometrias
+            featureidkey="properties.shapeGroup",  # Identificar o campo que conecta o geojson com os dados
+            color='Numero de Visitantes',  # Coluna para definir a intensidade das cores
+            hover_name='Pais',  # Nome do país ao passar o mouse
+            color_continuous_scale='Blues',  # Esquema de cores
+            range_color=[min_visitors, max_visitors],  # Definir o intervalo de cor baseado nos valores de visitantes
+            projection='mercator',  # Projeção mercator para ajuste mais específico
+            width=1200,  # Definir a largura da figura
+            height=800   # Definir a altura da figura
+        )
+
+        # Atualizar o layout do gráfico para limitar a latitude e longitude
+        fig.update_geos(
+            visible=True,
+            projection_type="mercator",
+            lataxis=dict(range=[-60, 90]),  # Limitar a latitude para mostrar o hemisfério ocidental
+            lonaxis=dict(range=[-180, 0])  # Limitar a longitude para mostrar apenas o hemisfério ocidental
+        )
+
+        # Ajustar o layout do gráfico
+        fig.update_layout(
+            title_text="Número de Visitantes por País",
+            title_x=0.5
+        )
+
+        # Mostrar o gráfico no Streamlit
+        st.plotly_chart(fig, use_container_width=True)
