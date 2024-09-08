@@ -6,5 +6,5 @@ draft.ipynb
 .DS_Store
 /support/
 *__init__.py
-*__pycache__ 
-/data/01_raw/
+*__pycache__
+/data/01_raw/geoBoundariesCGAZ_ADM0.shp
