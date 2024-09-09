@@ -1,14 +1,14 @@
 import streamlit as st
 import os 
 
+# Trying to configure the name page, but it did't worked on the lateral tab, only on the browser,
 st.set_page_config(
     page_title="Main Page",
     page_icon="👋",
 )
 
 
-
-# cleaning any previous uploaded data
+# cleaning any previous uploaded data left by previous users
 uploaded_path = './data/03_uploaded/uploaded_file.csv'
 
 # initializing session state to track file_state parameter shared between app.py and Introdução.py
@@ -18,8 +18,8 @@ if 'file_state' not in st.session_state:
 # checking if the file exists
 if (os.path.isfile(uploaded_path)) and (st.session_state['file_state'] == 0): # if file state == 1, then a new file was uploaded
     os.remove(uploaded_path)
-    st.write('Removido')
 
+# initialyzing the app and calling IA generated image
 st.header('Bem Vindo ao TouristInsight RJ 🏖️')
 st.image('./images/riodejaneiro.jpg')
 
@@ -35,7 +35,7 @@ st.write('''
 
 # Q6 e Q8
 
-# creating ther session state
+# creating backgroud color session state
 if 'backgroud_state' not in st.session_state:
     st.session_state['backgroud_state'] = '#FFFFFF'
 
@@ -58,6 +58,8 @@ st.markdown(
     ''',
     unsafe_allow_html=True)
 
-
-
-
+st.write('''
+         Muito obrigado por utilizar o aplicativo.
+         Caso queiera entrar em contato com o desenvolvedor para sugestões, melhorias ou outros projetos, 
+         favor encaminhar e-mail para pedromonteirovieira@gmail.com 😘.
+         ''')

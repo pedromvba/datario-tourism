@@ -10,8 +10,7 @@ st.set_page_config(
 )
 
 
-# applying the backgroud color
-
+# applying the backgroud color saved in the session state
 background_color = st.session_state['backgroud_state']
 
 st.markdown(
@@ -23,10 +22,6 @@ st.markdown(
     </style>
     ''',
     unsafe_allow_html=True)
-
-
-
-
 
 ############ Q1 ######################
 st.header('Introdução - Comece por Aqui 👋')
@@ -69,19 +64,18 @@ st.write('''
          '''
 )
 
-
-
 uploaded_file = st.file_uploader(
                 label='Favor inserir seu arquivo .csv aqui.',
                 type='csv'
                 )
 
 if uploaded_file:
-
+    # saves file in the 03_uploaded folder and changes session state
     df = pd.read_csv(uploaded_file, encoding='utf-8') 
     df.to_csv('./data/03_uploaded/uploaded_file.csv', index=False, encoding='utf-8')
     st.session_state['file_state'] = 1 # maintain the file without deletion
 
+    # progress bar
     progress_bar = st.progress(0, text='Estamos Processando os seus Dados!')
     for percent in range(100):
         time.sleep(0.01)
@@ -89,7 +83,6 @@ if uploaded_file:
     
     time.sleep(1)
     progress_bar.empty()
-
 
     time.sleep(0.3)
     st.write('Seguem abaixo as primeiras linhas dos dados recebidos. Favor acessar a aba Explorar Dados para iniciar sua análise.')
