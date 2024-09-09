@@ -40,7 +40,7 @@ st.write('''
         país e continente, bem como a distribuição por país dos turistas, facilitando assim a identificação de sazonalidades e e
         públicos alvo. Ainda, será possível verificar de forma rápida métricas como o total de turistas por mês, dentre outras.
         
-         Por fim, o dashboard permitirá que, após o upload dos dados, insights sejam descobertos por meio de filtros e seletores.
+         Por fim, o dashboard permitirá que, após o upload dos dados, insights sejam descobertos por meio de filtros, seletores e gráficos.
          '''
 )
 
